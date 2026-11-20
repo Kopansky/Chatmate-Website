@@ -1674,9 +1674,12 @@ html.has-stage .stp10{display:grid}
 @media (max-width:760px),(max-aspect-ratio:4/5){
   #w6 .br-bar,#w6 .wg-tabs,#w6 .wg-brand{display:none}
   /* a chat scrolls from the bottom: the newest message stays by the input, older ones move up and out */
-  #w6 .wg-msgs{justify-content:flex-end;overflow:hidden}
+  #w6 .wg-msgs{justify-content:flex-start;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 26px);mask-image:linear-gradient(to bottom,transparent 0,#000 26px)}
+  #w6 .wg-mi{transition:transform .5s cubic-bezier(.22,.7,.2,1)}
   #w6 .wg-comp{margin-bottom:14px}
 }
+/* the widget's messages sit in one strip (it carries the column and its gap) */
+.wg-mi{display:flex;flex-direction:column;gap:inherit}
 </style>
 </head>
 <body>
@@ -2275,11 +2278,11 @@ html.has-stage .stp10{display:grid}
                 <div class="ws-cards" style="grid-template-columns:repeat(2,minmax(0,1fr));width:48%"><div><b></b><i></i><i></i></div><div><b style="background:#d3efea"></b><i></i><i></i></div></div>
                 <div class="wg wg5">
                   <div class="wg-h"><span class="wg-av">ר</span><b>מספרת רונית</b><span class="x"><svg class="i sm"><use href="#x"/></svg></span></div>
-                  <div class="wg-msgs" id="bMsgs">
+                  <div class="wg-msgs" id="bMsgs"><div class="wg-mi" id="bMi">
                     <div class="wg-b wg-g" id="bG">היי, כאן מספרת רונית <span class="spk wz-spk"><svg><use href="#spark"/></svg></span> אפשר לקבוע תור, לשמוע על הטיפולים או לבדוק מחירים — מה מעניין אתכם?</div>
                     <div class="wg-u" id="bQ">כמה עולה תספורת?</div>
                     <div class="wg-b" id="bTyping" style="display:none"><span class="wg-dots"><i></i><i></i><i></i></span></div>
-                    <div class="wg-b" id="bA"><div class="stream" id="bS">תספורת גברים <bdi>80</bdi> ₪, נשים מ־<bdi>140</bdi> ₪ לפי אורך. צבע מלא <bdi>260</bdi> ₪ — כולל שטיפה וייבוש.</div></div>
+                    <div class="wg-b" id="bA"><div class="stream" id="bS">תספורת גברים <bdi>80</bdi> ₪, נשים מ־<bdi>140</bdi> ₪ לפי אורך. צבע מלא <bdi>260</bdi> ₪ — כולל שטיפה וייבוש.</div></div></div>
                   </div>
                   <div class="wg-comp">הקלד הודעה...<i><svg class="i"><use href="#send"/></svg></i></div>
                   <div class="wg-tabs"><span><svg class="i"><use href="#home"/></svg>בית</span><span class="on"><svg class="i"><use href="#chat"/></svg>הודעות</span></div>
@@ -3019,7 +3022,8 @@ html.has-stage .stp10{display:grid}
     E.bScan.style.opacity = w > 0 && w < 1 ? 1 : 0;
     E.bScan.style.transform = 'translateY(' + (w * E.w6.offsetHeight) + 'px)';
     // where the window is short, the greeting makes room for the answer the way a chat scrolls
-    var gk = M.tight ? eInOut(seg(t, .4, .47)) : 0;
+    var chatScroll = innerWidth < 761 || innerWidth / innerHeight < .8;
+    var gk = M.tight && !chatScroll ? eInOut(seg(t, .4, .47)) : 0;
     tf(E.bG, 0, lerp(18, 0, eOut(seg(t, .12, .22))) - gk * 30, 1, seg(t, .12, .2) * (1 - gk));
     E.bG.style.maxHeight = gk > 0 ? (M.gH * (1 - gk)) + 'px' : '';
     E.bG.style.marginBottom = gk > 0 ? (-14 * gk) + 'px' : '';
@@ -3031,6 +3035,11 @@ html.has-stage .stp10{display:grid}
     E.a.style.opacity = seg(t, .46, .49);
     E.s.style.setProperty('--rv', lerp(0, 134, seg(t, .47, .86)) + '%');
     pop(E.p6q, seg(t, .28, .38)); pop(E.p6av, seg(t, .46, .56)); pop(E.p6a, seg(t, .5, .62)); pop(E.p6q2, seg(t, .9, 1));
+    // phones: the strip slides up just enough to keep the newest message in view (eased by CSS)
+    var mi = $('bMi'), ms = $('bMsgs'), cs = getComputedStyle(ms);
+    var room = ms.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    var up = chatScroll ? Math.max(0, mi.offsetHeight - room) : 0;
+    if (mi._up !== up) { mi._up = up; mi.style.transform = up ? 'translateY(' + (-up) + 'px)' : ''; }
   }
   // a screen arriving: a clip from below, with a scan line on its edge
   function wipe(main, k){
@@ -3182,7 +3191,7 @@ html.has-stage .stp10{display:grid}
     // does the whole conversation fit in the widget? (measured with every message shown)
     var ms = $('bMsgs'), keep = [E.typing.style.display, E.a.style.display, E.bG.style.maxHeight];
     E.typing.style.display = 'none'; E.a.style.display = ''; E.bG.style.maxHeight = '';
-    var need = 0; [].forEach.call(ms.children, function(c){ if (c.style.display !== 'none') need += c.offsetHeight + 14; });
+    var need = 0; [].forEach.call($('bMi').children, function(c){ if (c.style.display !== 'none') need += c.offsetHeight + 14; });
     M.gH = E.bG.offsetHeight; M.tight = need + 20 > ms.clientHeight;
     E.typing.style.display = keep[0]; E.a.style.display = keep[1]; E.bG.style.maxHeight = keep[2];
     measureAfter();
