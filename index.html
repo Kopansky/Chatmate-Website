@@ -472,10 +472,9 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px var(-
 
 /* ---------- FAQ ---------- */
 .faq-top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 48px;margin-bottom:44px}
-.faq-mail{display:flex;flex-direction:column;gap:6px;min-width:min(420px,100%);padding:26px;border-radius:var(--r4);border:1px solid var(--line)}
-.faq-mail b{font-size:22px}
-.faq-mail a{align-self:flex-start;color:var(--primary);font-weight:600;font-size:19px}
-.faq-mail span{font-size:17px;color:var(--ink-2)}
+.faq-more{margin:28px 0 0;font-size:18px;line-height:1.5;color:var(--ink-2)}
+.faq-more a{color:var(--primary);font-weight:600}
+.faq-more a:hover{text-decoration:underline}
 .faq-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
 .qa{border-radius:var(--r3);background:var(--card);transition:background-color .25s}
 .qa[open]{background:#fff;box-shadow:0 0 0 1px var(--line)}
@@ -2659,7 +2658,6 @@ html.has-stage .stp10{display:grid}
   <div class="sec-in">
     <div class="faq-top">
       <h2 id="faqh" class="rv">שאלות לפני שמתחילים.</h2>
-      <div class="faq-mail rv"><b>לא מצאתם?</b><a href="mailto:hello@chat-mate.io" dir="ltr">hello@chat-mate.io</a><span>בן אדם עונה, בדרך כלל תוך שעתיים.</span></div>
     </div>
     <div class="faq-list">
       <details class="qa"><summary><span>כמה זמן לוקח עד שהוא עונה?</span><span class="chv"><svg class="i" aria-hidden="true"><use href="#chevd"/></svg></span></summary><div class="ans"><p>תוך <bdi>5</bdi> דקות יש לכם עוזר שעונה ללקוחות: ממלאים את פרטי העסק, מה אתם מציעים ומתי אתם פתוחים, ונותנים לו קול. יש לכם אתר? הוא יקרא גם אותו.</p></div></details>
@@ -2669,6 +2667,7 @@ html.has-stage .stp10{display:grid}
       <details class="qa"><summary><span>באילו תוכניות יש ווטסאפ ויומן?</span><span class="chv"><svg class="i" aria-hidden="true"><use href="#chevd"/></svg></span></summary><div class="ans"><p>ווטסאפ ויומן גוגל כלולים בתוכניות צמיחה ועסקי. בועת הצ׳אט באתר כלולה בכל התוכניות.</p></div></details>
       <details class="qa"><summary><span>אפשר לבטל?</span><span class="chv"><svg class="i" aria-hidden="true"><use href="#chevd"/></svg></span></summary><div class="ans"><p>כן, אפשר לבטל בכל חודש. כל המחירים כוללים מע״מ.</p></div></details>
     </div>
+    <p class="faq-more rv">לא מצאתם? כתבו לנו ל־<a href="mailto:hello@chat-mate.io" dir="ltr">hello@chat-mate.io</a>. בן אדם עונה, בדרך כלל תוך שעתיים.</p>
   </div>
 </section>
 </main>
