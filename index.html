@@ -3209,10 +3209,13 @@ html.has-stage .stp10{display:grid}
     step8(seg(u, T.s8a, T.s8b));
     step9(seg(u, T.s9a, T.s9b));
     // the five-minute ring: 0:00 as the first field is typed, 5:00 when the answer has streamed
-    var tc = seg(u, T.s1a, T.ring), secs = Math.round(tc * 300 + Math.max(0, u - T.ring) * 70);   // and on past 5:00
+    var tc = seg(u, T.s1a, T.ring), secs = Math.round(tc * 300);   // it stops at 5:00
     tkR.setAttribute('stroke-dashoffset', 100 - tc * 100);
     tkT.textContent = Math.floor(secs / 60) + ':' + ('0' + secs % 60).slice(-2);
     tk.classList.toggle('is-done', tc >= 1);
+    // the clock is the five minutes of setup: it holds 5:00 a beat, then leaves
+    tk.style.opacity = 1 - seg(u, T.ring + .3, T.ring + .5);
+    tk.style.visibility = u > T.ring + .5 ? 'hidden' : '';
   }
   // the pinned window opens empty-handed: every field is typed in as the tour reaches it
   if (doc.classList.contains('has-stage')) typed.forEach(function(id){ F[id].textContent = ''; });
