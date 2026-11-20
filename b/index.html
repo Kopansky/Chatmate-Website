@@ -722,7 +722,7 @@ html.js .rv.is-in{opacity:1;transform:none}
 /* ---------- stage mode (JS, motion allowed) ---------- */
 html.has-stage .tp{height:var(--runway,790vh)}
 html.has-stage .tp-mark{position:absolute;top:var(--mark,100vh)}
-html.has-stage .tp-pin{position:sticky;top:0;height:100vh;overflow:hidden;display:block;padding:0}
+html.has-stage .tp-pin{position:sticky;top:0;height:100vh;height:100lvh;overflow:hidden;display:block;padding:0}
 html.has-stage .tp-hero{position:absolute;top:0;inset-inline:0;will-change:transform}
 html.has-stage .tp-world{position:absolute;left:0;top:0;margin:0;padding:0;max-width:none;display:block;width:var(--wt);height:var(--chh);transform-origin:0 0;direction:ltr;will-change:transform}
 html.has-stage .tc{position:absolute;top:0;width:var(--cw);height:var(--chh);gap:var(--pg,14px);direction:rtl;will-change:transform}
@@ -2814,7 +2814,13 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
   var eBack = function(t){ var c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
   function tf(el, x, y, s, o){ if (!el) return; el.style.transform = 'translate(' + (x||0) + 'px,' + (y||0) + 'px) scale(' + (s === undefined ? 1 : s) + ')'; if (o !== undefined) el.style.opacity = o; }
   function pop(el, t){ var k = clamp(t); tf(el, 0, 0, k <= 0 ? .001 : eBack(k), clamp(k * 3)); }
-  var vh = innerHeight;
+  // the pin is 100lvh; on phones innerHeight grows and shrinks as the address bar hides and shows, so the
+  // runway and every scroll position are measured against the large viewport, which stays put
+  var lvhProbe = document.createElement('div');
+  lvhProbe.style.cssText = 'position:absolute;top:0;left:0;width:0;height:100vh;height:100lvh;visibility:hidden;pointer-events:none';
+  document.body.appendChild(lvhProbe);
+  function stageVh(){ return lvhProbe.offsetHeight || innerHeight; }
+  var vh = stageVh();
 
   /* ---------- header + phone menu ---------- */
   var hd = $('hd'), burger = $('burger'), sheet = $('sheet');
@@ -2957,7 +2963,7 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
   function rowY(i){ return i < NR ? 0 : L.CH + L.RG; }
   function layout(){
     if (!doc.classList.contains('has-stage')) return;
-    var vw = doc.clientWidth; vh = innerHeight;
+    var vw = doc.clientWidth; vh = stageVh();
     var phone = vw < 761 || vw / vh < .8, short = !phone && vh < 820;
     doc.classList.toggle('is-short', short);
     var hdr = vw <= 900 ? 64 : 76, CW, G, topY, bot;
@@ -3329,15 +3335,16 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
   /* ---------- one loop ---------- */
   var ticking = false;
   function frame(){
-    ticking = false; vh = innerHeight;
+    ticking = false; vh = stageVh();
     hd.classList.toggle('is-solid', scrollY > 10);
     if (RM) return;
     stageFrame(); benefitFrame(); ftFrame();
   }
   function relayout(){ layout(); frame(); }
   addEventListener('scroll', function(){ if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
-  var lastW = innerWidth, lastH = innerHeight;
-  addEventListener('resize', function(){ clearTimeout(frame._t); frame._t = setTimeout(function(){ if (innerWidth !== lastW || Math.abs(innerHeight - lastH) > 120) { lastW = innerWidth; lastH = innerHeight; relayout(); } else frame(); }, 80); });
+  // the address bar showing or hiding is a resize too; re-lay out only when the pin's size really changes
+  var lastW = innerWidth, lastH = stageVh();
+  addEventListener('resize', function(){ clearTimeout(frame._t); frame._t = setTimeout(function(){ if (innerWidth !== lastW || stageVh() !== lastH) { lastW = innerWidth; lastH = stageVh(); relayout(); } else frame(); }, 80); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
   addEventListener('load', relayout);
   relayout();
