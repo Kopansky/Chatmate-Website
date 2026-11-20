@@ -1673,6 +1673,9 @@ html.has-stage .stp10{display:grid}
 /* phones: the widget on the business's site keeps only the conversation (no address bar, tabs or "powered by") */
 @media (max-width:760px),(max-aspect-ratio:4/5){
   #w6 .br-bar,#w6 .wg-tabs,#w6 .wg-brand{display:none}
+  /* a chat scrolls from the bottom: the newest message stays by the input, older ones move up and out */
+  #w6 .wg-msgs{justify-content:flex-end;overflow:hidden}
+  #w6 .wg-comp{margin-bottom:14px}
 }
 </style>
 </head>
