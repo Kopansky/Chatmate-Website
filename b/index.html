@@ -448,10 +448,9 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px var(-
 
 /* ---------- FAQ ---------- */
 .faq-top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 48px;margin-bottom:44px}
-.faq-mail{display:flex;flex-direction:column;gap:6px;min-width:min(420px,100%);padding:26px;border-radius:var(--r4);border:1px solid var(--line)}
-.faq-mail b{font-size:22px}
-.faq-mail a{align-self:flex-start;color:var(--primary);font-weight:600;font-size:19px}
-.faq-mail span{font-size:17px;color:var(--ink-2)}
+.faq-more{margin:28px 0 0;font-size:18px;line-height:1.5;color:var(--ink-2)}
+.faq-more a{color:var(--primary);font-weight:600}
+.faq-more a:hover{text-decoration:underline}
 .faq-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
 .qa{border-radius:var(--r3);background:var(--card);transition:background-color .25s}
 .qa[open]{background:#fff;box-shadow:0 0 0 1px var(--line)}
@@ -1583,12 +1582,14 @@ html.is-short .tp-sum{gap:12px}
   .ts-x b{font-size:17px}
 }
 @media (max-width:760px),(max-aspect-ratio:4/5){
-  .tp-sum{grid-template-columns:minmax(0,1fr);gap:6px;padding:0 16px}
-  .ts-t{height:44px;padding:0 12px;padding-inline:12px 12px;border-radius:16px}
-  .ts-a,.ts-x b{display:none}
+  .tp-sum{grid-template-columns:minmax(0,1fr);gap:5px;padding:0 16px;max-width:460px}
+  .ts-t{height:40px;gap:10px;padding:0;padding-inline:10px 4px;border-radius:14px}
+  .ts-a{width:56px;height:100%}
   .ts-x{flex-direction:row}
-  .ts-x > span{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ts-x b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ts-x > span{display:none}
   .ts-ok{position:static;order:0;width:24px;height:24px;flex:none}
+  .ts-ok svg{width:14px;height:14px}
 }
 /* ---------- round 8: the wizard windows are the focused signup flow, no app sidebar; content bigger ---------- */
 .aw-col{width:min(760px,calc(100% - 56px))}
@@ -1629,10 +1630,6 @@ html.is-short .tp-sum{gap:12px}
   .aw-tm{height:36px;font-size:16px}
   .aw-day b{font-size:16px}
   .aw-next{height:42px;font-size:16px}
-}
-/* round 8: the phone finale is just the headline, the button and the clock chip */
-@media (max-width:760px),(max-aspect-ratio:4/5){
-  .tp-sum{display:none}
 }
 /* round 9: the Inbox has no app nav; list and thread share the width */
 .ibx-list{width:min(420px,40%)}
@@ -1839,7 +1836,6 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
         </div>
         <div class="tc-w">
           <div class="win mock aw" role="img" aria-label="תוכן לדוגמה: מסך ההקמה של chatmate, ספרו לנו על העסק — בתוך האפליקציה, עם התפריט מימין. שם העסק מספרת רונית, סוג העסק קליניקות ותורים, עיר רמת גן, טלפון, אימייל וכתובת לדוגמה">
-            <span class="smp win-tag">תוכן לדוגמה</span>
             <div class="aw-in" aria-hidden="true">
               
               <div class="aw-main">
@@ -1921,7 +1917,6 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
         </div>
         <div class="tc-w">
           <div class="win mock aw" role="img" aria-label="תוכן לדוגמה: מסך ההקמה, מה אתם מוכרים או נותנים, בתוך האפליקציה. שתי שורות על המספרה, שלושה שירותים עם מחירים, תשובות לשלוש השאלות שחוזרות, וכתובת אתר בשדה שהוא רשות">
-            <span class="smp win-tag">תוכן לדוגמה</span>
             <div class="aw-in" aria-hidden="true">
               
               <div class="aw-main">
@@ -1976,7 +1971,6 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
         </div>
         <div class="tc-w">
           <div class="win mock aw aw3" role="img" aria-label="תוכן לדוגמה: מסך ההקמה, תנו לו קול, בתוך האפליקציה: שם העוזר נועה, שפה עברית, טון ידידותי, בשם העסק, והודעת פתיחה עם תצוגה מקדימה">
-            <span class="smp win-tag">תוכן לדוגמה</span>
             <div class="aw-in" aria-hidden="true">
               
               <div class="aw-main">
@@ -2040,7 +2034,6 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
         </div>
         <div class="tc-w">
           <div class="win mock aw" role="img" aria-label="תוכן לדוגמה: מסך ההקמה, איך העוזר יעבוד. טייס אוטומטי נבחר, איסוף פרטים והעברה לנציג מופעלים. איפה העוזר יענה: צ׳אט באתר נבחר; וואטסאפ בתוכניות צמיחה ועסקי; טלגרם, פייסבוק מסנג׳ר ואינסטגרם בקרוב">
-            <span class="smp win-tag">תוכן לדוגמה</span>
             <div class="aw-in" aria-hidden="true">
               
               <div class="aw-main">
@@ -2109,7 +2102,6 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
         </div>
         <div class="tc-w">
           <div class="win mock aw aw5" role="img" aria-label="תוכן לדוגמה: מסך ההקמה, מתי אתם פתוחים, בתוך האפליקציה. ראשון עד חמישי 09:00–19:00, שישי 09:00–14:00, שבת סגור; ואז הלחיצה על לבנות את העוזר ומסך הבנייה">
-            <span class="smp win-tag">תוכן לדוגמה</span>
             <div class="aw-in" aria-hidden="true">
               
               <div class="aw-main">
@@ -2175,7 +2167,6 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
         </div>
         <div class="tc-w">
           <div class="win mock" role="img" aria-label="תוכן לדוגמה: בועת הצ׳אט באתר של המספרה, בצבע של העסק. לקוח שואל כמה עולה תספורת, והעוזר עונה במחירים שבעל העסק כתב בהקמה">
-            <span class="smp win-tag">תוכן לדוגמה</span>
             <div class="br" aria-hidden="true">
               <div class="br-bar"><span class="br-dots"><i></i><i></i><i></i></span><span class="br-url"><svg class="i"><use href="#lock"/></svg>your-business.co.il</span></div>
               <div class="ws">
@@ -2233,7 +2224,6 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
         </div>
         <div class="tc-w">
           <div class="win mock ibx" role="img" aria-label="תוכן לדוגמה: תיבת הדואר של chatmate. שיחה על מחיר תספורת מגיעה מצ׳אט באתר; בשיחה שנייה העוזר לא יודע ומבקש להעביר — מופיעה בקשת העברה לנציג, בעלת העסק לוחצת קבל וכותבת בעצמה">
-            <span class="smp win-tag">תוכן לדוגמה</span>
             <div class="ap" aria-hidden="true">
               
               <div class="ibx-list">
@@ -2297,7 +2287,6 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
         </div>
         <div class="tc-w">
           <div class="win mock aw hmx" role="img" aria-label="תוכן לדוגמה: מסך הבית של chatmate בערב — ערב טוב, רונית; שלוש שיחות פתוחות, אחת ממתינה להעברה, ליד חדש מהיום, העוזר במצב Auto-Pilot ותור קרוב למחר">
-            <span class="smp win-tag">תוכן לדוגמה</span>
             <div class="aw-in" aria-hidden="true">
               <aside class="as-side"><div class="as-ws"><span class="spk"><svg><use href="#spark"/></svg></span><b>מספרת רונית</b><svg class="i ud"><use href="#updown"/></svg></div><span class="as-ri on"><svg class="i"><use href="#home"/></svg>בית</span><span class="as-ri"><svg class="i"><use href="#inbox"/></svg>תיבת דואר<span class="n" id="h6in">1</span></span><span class="as-ri"><svg class="i"><use href="#bell"/></svg>התראות</span><span class="as-ri"><svg class="i"><use href="#users"/></svg>לידים</span><span class="as-ri"><svg class="i"><use href="#usercheck"/></svg>לקוחות</span><span class="as-ri"><svg class="i"><use href="#cal"/></svg>יומן</span><span class="as-div"></span><span class="as-gh"><svg class="i"><use href="#sparkles"/></svg>העוזר<svg class="i sm cv"><use href="#chevd"/></svg></span><span class="as-gh"><svg class="i"><use href="#plug"/></svg>ערוצים<svg class="i sm cv"><use href="#chevd"/></svg></span><span class="as-gh"><svg class="i"><use href="#sliders"/></svg>ניהול<svg class="i sm cv"><use href="#chevd"/></svg></span><span class="as-gh"><svg class="i"><use href="#lifebuoy"/></svg>עזרה<svg class="i sm cv"><use href="#chevd"/></svg></span><div class="as-user"><span class="av">ר</span><span><b>רונית</b><small>מנהל</small></span></div></aside>
               <div class="hx-vp"><div class="hx-sc" id="sc6">
@@ -2735,7 +2724,6 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
   <div class="sec-in">
     <div class="faq-top">
       <h2 id="faqh" class="rv">שאלות לפני שמתחילים.</h2>
-      <div class="faq-mail rv"><b>לא מצאתם?</b><a href="mailto:hello@chat-mate.io" dir="ltr">hello@chat-mate.io</a><span>בן אדם עונה, בדרך כלל תוך שעתיים.</span></div>
     </div>
     <div class="faq-list">
       <details class="qa"><summary><span>כמה זמן לוקח עד שהוא עונה?</span><span class="chv"><svg class="i" aria-hidden="true"><use href="#chevd"/></svg></span></summary><div class="ans"><p>תוך <bdi>5</bdi> דקות יש לכם עוזר שעונה ללקוחות: ממלאים את פרטי העסק, מה אתם מציעים וכמה זה עולה, ומה שואלים אתכם — והוא עונה מזה.</p></div></details>
@@ -2745,6 +2733,7 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
       <details class="qa"><summary><span>באילו תוכניות יש ווטסאפ ויומן?</span><span class="chv"><svg class="i" aria-hidden="true"><use href="#chevd"/></svg></span></summary><div class="ans"><p>ווטסאפ ויומן גוגל כלולים בתוכניות צמיחה ועסקי. בועת הצ׳אט באתר כלולה בכל התוכניות.</p></div></details>
       <details class="qa"><summary><span>אפשר לבטל?</span><span class="chv"><svg class="i" aria-hidden="true"><use href="#chevd"/></svg></span></summary><div class="ans"><p>כן, אפשר לבטל בכל חודש. כל המחירים כוללים מע״מ.</p></div></details>
     </div>
+    <p class="faq-more rv">לא מצאתם? כתבו לנו ל־<a href="mailto:hello@chat-mate.io" dir="ltr">hello@chat-mate.io</a>. בן אדם עונה, בדרך כלל תוך שעתיים.</p>
   </div>
 </section>
 </main>
@@ -2953,6 +2942,8 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
       s.el.style.transform = 'none';
       var vp = s.el.parentNode, max = Math.max(0, s.el.offsetHeight - vp.clientHeight);
       s.ys = s.keys.map(function(k){ var a = $(k[2]); return clamp(a.offsetTop - 14, 0, max); });
+      // a phone's window is short: the last stop goes to the very end, so nothing stays cut off below it
+      s.ys[s.ys.length - 1] = max;
       s.last = -1;
     });
   }
@@ -2993,14 +2984,17 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
     tk.classList.add('is-done'); slot.style.width = tk.offsetWidth + 'px';
     L.tkWd = tk.offsetWidth; L.tkH = tk.offsetHeight;
     tk.classList.remove('is-done'); L.tkW0 = tk.offsetWidth;
+    var sumH = sum.offsetHeight, sg = phone ? 18 : (short ? 22 : 30);
+    // phones: the eight done steps sit between the headline and the button
+    var frow = fin.querySelector('.tp-frow'), fhd = fin.querySelector('.tp-fh');
+    frow.style.marginTop = phone ? (sumH + 2 * sg) + 'px' : '';
     var fh = fin.offsetHeight, room = vh - hdr - (phone ? 28 : 40);
     L.sF = Math.min(L.sO, (room - fh - 30) / L.WH);
-    var sumH = sum.offsetHeight, sg = phone ? 18 : (short ? 22 : 30);
-    var total = fh + sg + sumH;
+    var total = phone ? fh : fh + sg + sumH;
     L.finTop = hdr + Math.max(8, (vh - hdr - total) / 2);
     L.finWorld = L.finTop + fh + 30;
     fin.style.top = L.finTop + 'px';
-    sum.style.top = (L.finTop + fh + sg) + 'px';
+    sum.style.top = (L.finTop + (phone ? fhd.offsetTop + fhd.offsetHeight : fh) + sg) + 'px';
     // where the clock docks in the finale: the slot beside the button
     var b = slot.getBoundingClientRect(), pr = tkWrap.offsetParent.getBoundingClientRect();
     L.slotX = b.left - pr.left + b.width / 2; L.slotY = b.top - pr.top + b.height / 2;
