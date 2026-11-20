@@ -2885,8 +2885,9 @@ html.has-stage .stp10{display:grid}
   function offs(el, sc){ var y = 0; while (el && el !== sc) { y += el.offsetTop; el = el.offsetParent; } return y; }
   function aim(i, id, pad){ return clamp(offs($(id), E.sc[i]) - (pad === undefined ? 18 : pad), 0, M.max[i]); }
   function scrollSeq(i, t, keys){
-    var y = 0;
-    keys.forEach(function(k){ y = lerp(y, k[2] === 'end' ? M.max[i] : (M.at[k[2]] || 0), eInOut(seg(t, k[0], k[1]))); });
+    // the end is read now: the window's content can grow after the last measure (a field shown, text re-wrapped)
+    var sc = E.sc[i], end = Math.max(0, sc.offsetHeight - sc.parentNode.clientHeight), y = 0;
+    keys.forEach(function(k){ y = lerp(y, k[2] === 'end' ? end : Math.min(M.at[k[2]] || 0, end), eInOut(seg(t, k[0], k[1]))); });
     E.sc[i].style.transform = 'translateY(' + (-y) + 'px)';
   }
   // pressing "הבא": the button is pressed and the next segment of the bar fills
