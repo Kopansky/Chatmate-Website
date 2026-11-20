@@ -1667,8 +1667,13 @@ html.has-stage .stp10{display:grid}
 .to-top:hover{transform:translateY(-2px)}
 .to-top:focus-visible{outline:2px solid var(--primary);outline-offset:3px}
 .to-top svg{width:18px;height:18px}
+@media (max-width:760px){ .to-top{left:10px;bottom:10px} }
 /* the hero's how-it-works line, centred under the five minutes as the rest of this hero */
 .hero-in .hero-sub{margin-inline:auto;text-align:center;text-wrap:balance}
+/* phones: the widget on the business's site keeps only the conversation (no address bar, tabs or "powered by") */
+@media (max-width:760px),(max-aspect-ratio:4/5){
+  #w6 .br-bar,#w6 .wg-tabs,#w6 .wg-brand{display:none}
+}
 </style>
 </head>
 <body>
