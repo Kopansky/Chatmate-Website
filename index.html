@@ -1680,6 +1680,22 @@ html.has-stage .stp10{display:grid}
 }
 /* the widget's messages sit in one strip (it carries the column and its gap) */
 .wg-mi{display:flex;flex-direction:column;gap:inherit}
+/* phones: the Inbox hand-over request is one slim row, so the conversation keeps its room */
+@media (max-width:760px),(max-aspect-ratio:4/5){
+  .ibk-hb{flex-wrap:nowrap;gap:6px;margin:6px 8px;padding:4px;padding-inline-start:6px;border-radius:18px}
+  .ibk-hb .cl{width:28px;height:28px}.ibk-hb .cl svg{width:15px;height:15px}
+  .ibk-hb p{flex:1 1 auto;font-size:14px}
+  .ibk-hb .d,.ibk-hb .k{height:28px;padding:0 9px;gap:4px;font-size:13px}
+  .ibk-hb svg{width:13px;height:13px}
+}
+/* phones: Home as the app shows it on a phone: the date, the stat icons and every card (it scrolls down in step 9) */
+@media (max-width:760px),(max-aspect-ratio:4/5){
+  .hk .hk-date{display:flex;font-size:14px}
+  .hk-st{padding-inline:6px 10px}
+  .hk-st .ic{display:grid;width:28px;height:28px}.hk-st .ic svg{width:15px;height:15px}
+  html.has-stage .hk .hc-asst,html.has-stage .hk .hk-up,html.has-stage .hk .hk-leads{display:block}
+}
+@media (max-width:760px),(max-aspect-ratio:4/5){ .hk-st .lb{font-size:13px} }
 </style>
 </head>
 <body>
@@ -3133,6 +3149,11 @@ html.has-stage .stp10{display:grid}
     });
     pop(HK.pp[0], seg(t, .1, .2)); pop(HK.pp[1], seg(t, .18, .28)); pop(HK.rr[0], seg(t, .32, .42)); pop(HK.rr[1], seg(t, .5, .6));
     var mk = eOut(seg(t, 0, .4)); HK.moon.style.transform = 'translateY(' + lerp(30, 0, mk) + 'px)'; HK.moon.style.opacity = mk;
+    // phones: the Home screen scrolls down slowly, as it would on a phone, so every card is seen
+    var hk = HK.root || (HK.root = document.querySelector('#w9main .hk')), box = $('w9main');
+    var phone = innerWidth < 761 || innerWidth / innerHeight < .8;
+    var over = phone ? Math.max(0, hk.offsetHeight - box.clientHeight + 16) : 0;
+    hk.style.transform = over ? 'translateY(' + (-over * eInOut(seg(t, .45, .92))) + 'px)' : '';
   }
   // a scrolled list never rests with a block cut: scroll targets snap to a block's top, and a block fades out
   // before its top passes the top line or its bottom passes the bottom (room)
@@ -3154,7 +3175,10 @@ html.has-stage .stp10{display:grid}
     els.forEach(function(e){ if (e.getBoundingClientRect().bottom > mb) e.style.display = 'none'; });
   }
   function measureAfter(){
-    fitCards(HK.m, [].slice.call(document.querySelectorAll('#w9 .hc')));
+    // phones scroll the Home screen in step 9 instead of dropping the cards that do not fit
+    var hcs = [].slice.call(document.querySelectorAll('#w9 .hc'));
+    if (innerWidth < 761 || innerWidth / innerHeight < .8) hcs.forEach(function(e){ e.style.display = ''; });
+    else fitCards(HK.m, hcs);
     var soc = [].slice.call(document.querySelectorAll('#w7 .ig3-grid.ig3-soc .ig3-c')), socH = document.querySelector('#w7 .ig3-h.ig3-soc');
     socH.style.display = '';
     fitCards(IG.m, [].slice.call(document.querySelectorAll('#w7 .ig3-c')));
