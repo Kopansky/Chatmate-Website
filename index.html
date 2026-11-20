@@ -3282,6 +3282,8 @@ html.has-stage .stp10{display:grid}
     lastW = innerWidth; lastVh = stageVh(); measureStage(); frame();
   }, 80); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ measureStage(); frame(); });
+  // a face that arrives later (a weight first used further down) re-wraps text: measure again
+  if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', function(){ clearTimeout(measureStage._t); measureStage._t = setTimeout(function(){ measureStage(); frame(); }, 60); });
   addEventListener('load', function(){ measureStage(); frame(); });
   measureStage(); frame();
 })();

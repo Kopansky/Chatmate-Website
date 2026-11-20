@@ -2964,6 +2964,14 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
   }
   function scrollAt(i, t){
     var s = SC[i]; if (!s || !s.ys) return;
+    // where each stop is, read now (text can re-wrap after the last layout); the last stop is the very end
+    var vp = s.el.parentNode, max = Math.max(0, s.el.offsetHeight - vp.clientHeight);
+    s.ys = s.keys.map(function(k){ return clamp($(k[2]).offsetTop - 14, 0, max); });
+    // the last stop: the last field just above the button bar, not the padding under it
+    var col = s.el.lastElementChild, last = col && col.lastElementChild;
+    var endY = max;
+    if (last) { var lt = 0, e = last; while (e && e !== s.el) { lt += e.offsetTop; e = e.offsetParent; } if (e === s.el) endY = lt + last.offsetHeight + 16 - vp.clientHeight; }
+    s.ys[s.ys.length - 1] = clamp(Math.max(endY, s.ys[s.ys.length - 2] || 0), 0, max);
     var y = 0;
     s.keys.forEach(function(k, j){ if (t >= k[1]) y = s.ys[j]; else if (t > k[0]) y = lerp(y, s.ys[j], eInOut(seg(t, k[0], k[1]))); });
     y = Math.round(y);
@@ -3374,6 +3382,8 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
   var lastW = innerWidth, lastH = stageVh();
   addEventListener('resize', function(){ clearTimeout(frame._t); frame._t = setTimeout(function(){ if (innerWidth !== lastW || stageVh() !== lastH) { lastW = innerWidth; lastH = stageVh(); relayout(); } else frame(); }, 80); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+  // a face that arrives later (a weight first used further down) re-wraps text: measure again
+  if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', function(){ clearTimeout(relayout._t); relayout._t = setTimeout(relayout, 60); });
   addEventListener('load', relayout);
   relayout();
 })();
