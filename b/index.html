@@ -3289,7 +3289,9 @@ html.has-stage .tp-slot{display:none}
     sumT.forEach(function(el, i){ var k = eOut(seg(u, T.fa + .45 + i * .035, T.fa + .65 + i * .035)); tf(el, 0, lerp(24, 0, k), 1, k); });
     sum.style.visibility = u > T.fa + .4 ? 'visible' : 'hidden';
     // the app's confetti, once, the moment the building screen ticks its last row (setup finished)
-    if (!confetti.fired && u > P[4][0] + .93 * (P[4][1] - P[4][0]) && u < Gl[4][1]) { confetti.fired = true; burst(); }
+    // once each time the scroll enters that moment, from above or from below
+    if (u <= T.cfx || u >= Gl[4][1]) confetti.fired = false;
+    else if (!confetti.fired) { confetti.fired = true; burst(); }
     var w = weights(u);
     cols.forEach(function(col, i){ col.style.transform = 'scale(' + lerp(.86, 1, w[i]) + ')'; veils[i].style.opacity = lerp(.62, 0, w[i]); });
     // hero leaves, the glow comes back for the finale

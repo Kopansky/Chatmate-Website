@@ -2955,7 +2955,9 @@ html.has-stage .stp10{display:grid}
     E.bi.forEach(function(r, i){ r.classList.toggle('is-done', t > .22 + i * .15); });
     E.pk.forEach(function(c, i){ pop(c, seg(t, .22 + i * .3, .3 + i * .3)); });
     E.pkc.setAttribute('opacity', eOut(seg(t, .82, .95)));
-    if (!confetti.fired && t > .82 && t < 1) { confetti.fired = true; burst(); }
+    // once each time the scroll enters the moment the wizard finishes, from above or from below
+    if (t <= .82 || t >= 1) confetti.fired = false;
+    else if (!confetti.fired) { confetti.fired = true; burst(); }
     var hr = lerp(-1, 2, eInOut(seg(u, T.s5a, T.bb)));
     E.p3h.setAttribute('transform', 'rotate(' + (60 + hr * 30) + ' 500 150)');
     E.p3m.setAttribute('transform', 'rotate(' + (hr * 360) + ' 500 150)');
