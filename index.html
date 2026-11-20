@@ -2843,7 +2843,7 @@ html.has-stage .stp10{display:grid}
     g5a: 10.6, g5b: 10.72, h4a: 10.65, h4b: 10.95, s8a: 10.7, s8b: 12,
     g6a: 11.95, g6b: 12.25, h5a: 11.95, h5b: 12.25, s9a: 12.2, s9b: 13.1, total: 13.35 };
   var HO = [[T.g0a, T.g0b], [T.g1a, T.g1b], [T.g2a, T.g2b], [T.g3a, T.g3b], [T.ba - .08, T.ba + .12], [T.g4a, T.g4b], [9.55, 9.85], [10.65, 10.95], [11.95, 12.25]];
-  T.ring = T.s6a + .86 * (T.s6b - T.s6a); // 5:00 exactly as the answer finishes streaming
+  T.ring = T.ba + .82 * (T.bb - T.ba); // 5:00 exactly as the wizard finishes: the confetti
   function typeTo(el, k){ var f = el.getAttribute('data-full'), n = Math.round(f.length * clamp(k)); var s = f.slice(0, n); if (el.textContent !== s) el.textContent = s; }
   // a typed field: its text arrives letter by letter, with the app's focus ring while it is typed
   var typed = ['bName', 'bCity', 'bPhone', 'bMail', 'bAddr', 'oDesc', 'oS1', 'oP1', 'oS2', 'oP2', 'oS3', 'oP3', 'oA', 'oA2', 'oA3', 'oUrl', 'aName', 'hMail'];
