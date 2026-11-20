@@ -1583,7 +1583,7 @@ html.is-short .tp-sum{gap:12px}
 }
 @media (max-width:760px),(max-aspect-ratio:4/5){
   .tp-sum{grid-template-columns:minmax(0,1fr);gap:5px;padding:0 16px;max-width:460px}
-  .ts-t{height:40px;gap:10px;padding:0;padding-inline:10px 4px;border-radius:14px}
+  .ts-t{height:var(--tsh,40px);gap:10px;padding:0;padding-inline:10px 4px;border-radius:14px}
   .ts-a{width:56px;height:100%}
   .ts-x{flex-direction:row}
   .ts-x b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1687,6 +1687,17 @@ html.has-stage .tp-line{height:var(--wh2)}
 /* the clock: docked on the focused window's bottom edge, placed from JS */
 html.has-stage .tk-wrap{display:block;left:0;top:0;right:auto;bottom:auto;width:max-content;padding:0;will-change:transform}
 html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:34px}html.is-short .tk .tm{font-size:20px}html.is-short .tk .lb{font-size:17px}html.is-short .tk .dn{height:34px}
+/* phone windows: a field's heading reads above its options, not under them */
+@container aw (max-width:700px){
+  .aw-l{font-size:17px;font-weight:700}
+  .aw-tile b,.aw-lt b,.aw-mode b,.aw-row b,.aw-cht b{font-size:16px;font-weight:600}
+  .aw-tile small,.aw-lt small,.aw-mode small,.aw-row small{font-size:15px}
+  .aw-lt{padding:9px 14px;border-radius:18px}
+}
+/* phones: the clock's slot has its own row above the button, whatever the button's width */
+@media (max-width:760px),(max-aspect-ratio:4/5){
+  .tp-frow{flex-direction:column;gap:14px}
+}
 </style>
 </head>
 <body>
@@ -2984,12 +2995,25 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
     tk.classList.add('is-done'); slot.style.width = tk.offsetWidth + 'px';
     L.tkWd = tk.offsetWidth; L.tkH = tk.offsetHeight;
     tk.classList.remove('is-done'); L.tkW0 = tk.offsetWidth;
-    var sumH = sum.offsetHeight, sg = phone ? 18 : (short ? 22 : 30);
-    // phones: the eight done steps sit between the headline and the button
+    var sg = phone ? 18 : (short ? 22 : 30);
+    // phones: the eight done steps sit between the headline and the button; where the phone's text is
+    // larger (or the screen shorter) the rows get slimmer, so the headline, list, clock and button all fit
     var frow = fin.querySelector('.tp-frow'), fhd = fin.querySelector('.tp-fh');
-    frow.style.marginTop = phone ? (sumH + 2 * sg) + 'px' : '';
+    sum.style.removeProperty('--tsh');
+    var sumH = sum.offsetHeight;
+    if (phone) {
+      frow.style.marginTop = (sumH + 2 * sg) + 'px';
+      var over = fin.offsetHeight - (vh - hdr - 16);
+      if (over > 0) {
+        sum.style.setProperty('--tsh', Math.max(28, 40 - Math.ceil(over / sum.children.length)) + 'px');
+        sumH = sum.offsetHeight; frow.style.marginTop = (sumH + 2 * sg) + 'px';
+      }
+    } else frow.style.marginTop = '';
     var fh = fin.offsetHeight, room = vh - hdr - (phone ? 28 : 40);
-    L.sF = Math.min(L.sO, (room - fh - 30) / L.WH);
+    // the camera's last scale (the windows fade out under the finale); on phones the list makes the finale
+    // tall, so this is measured from the headline, and it never reaches 0 (the camera mixes scales by log)
+    var fhs = phone ? fhd.offsetTop + fhd.offsetHeight : fh;
+    L.sF = Math.max(.05, Math.min(L.sO, (room - fhs - 30) / L.WH));
     var total = phone ? fh : fh + sg + sumH;
     L.finTop = hdr + Math.max(8, (vh - hdr - total) / 2);
     L.finWorld = L.finTop + fh + 30;
@@ -3271,6 +3295,7 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
     tkT.textContent = Math.floor(secs / 60) + ':' + ('0' + secs % 60).slice(-2);
     tk.classList.toggle('is-done', done);
     var d = dockPoint(u, c, w), mv = eInOut(seg(u, T.fa + .35, T.fa + .8));
+    if (mv > 0) { var sb = slot.getBoundingClientRect(), pb = tkWrap.offsetParent.getBoundingClientRect(); L.slotX = sb.left - pb.left + sb.width / 2; L.slotY = sb.top - pb.top + sb.height / 2; }
     d.y += L.phone ? 10 + L.tkH / 2 : L.tkH * .25;
     var x = lerp(d.x, L.slotX, mv), y = lerp(d.y, L.slotY, mv), wd = done ? L.tkWd : L.tkW0;
     tkWrap.style.opacity = seg(u, .55, .85);
