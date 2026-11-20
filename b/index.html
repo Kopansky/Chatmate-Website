@@ -1701,8 +1701,9 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
 /* phones: the clock's slot has its own row above the button, whatever the button's width */
 @media (max-width:760px),(max-aspect-ratio:4/5){
   .tp-frow{flex-direction:column;gap:14px}
-  html.has-stage .tp-slot{display:none}
 }
+/* the finale has no clock (it left at 5:00), so no slot beside the button */
+html.has-stage .tp-slot{display:none}
 </style>
 </head>
 <body>
@@ -3307,11 +3308,12 @@ html.is-short .tk{height:48px;gap:10px}html.is-short .tk svg{width:34px;height:3
     tkR2.setAttribute('stroke-dashoffset', 100 - after * 50);
     tkT.textContent = Math.floor(secs / 60) + ':' + ('0' + secs % 60).slice(-2);
     tk.classList.toggle('is-done', done);
-    var d = dockPoint(u, c, w), mv = L.phone ? 0 : eInOut(seg(u, T.fa + .35, T.fa + .8));
+    var d = dockPoint(u, c, w), mv = 0;
     if (mv > 0) { var sb = slot.getBoundingClientRect(), pb = tkWrap.offsetParent.getBoundingClientRect(); L.slotX = sb.left - pb.left + sb.width / 2; L.slotY = sb.top - pb.top + sb.height / 2; }
     d.y += L.phone ? 10 + L.tkH / 2 : L.tkH * .25;
     var x = lerp(d.x, L.slotX, mv), y = lerp(d.y, L.slotY, mv), wd = done ? L.tkWd : L.tkW0;
-    tkWrap.style.opacity = seg(u, .55, .85) * (L.phone ? 1 - seg(u, T.fa + .1, T.fa + .4) : 1);
+    // the clock is the five minutes of setup: it holds 5:00 a beat after the answer, then leaves (no second lap)
+    tkWrap.style.opacity = seg(u, .55, .85) * (1 - seg(u, T.ans + .3, T.ans + .45));
     tkWrap.style.transform = 'translate(' + Math.round(x - wd / 2) + 'px,' + Math.round(y - L.tkH / 2) + 'px)';
   }
 
